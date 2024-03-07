@@ -1,0 +1,29 @@
+{
+  "name": "blog-relational-db",
+  "version": "1.0.0",
+  "description": "relational database version of blog app",
+  "main": "cli.js",
+  "scripts": {
+    "start": "nodemon cli.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bonyaha/Blog-Relational-Backend.git"
+  },
+  "author": "Roman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Bonyaha/Blog-Relational-Backend/issues"
+  },
+  "homepage": "https://github.com/Bonyaha/Blog-Relational-Backend#readme",
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.18.3",
+    "pg": "^8.11.3",
+    "sequelize": "^6.37.1"
+  }
+}

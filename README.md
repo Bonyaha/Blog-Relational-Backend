@@ -10,3 +10,9 @@
 	```javascript
 	docker exec -it blog-postgres psql -U postgres postgres
 	```
+- local connection to the database enabled:
+```javascript
+  flyctl proxy 5432 -a blog-app-db
+```
+1) flyctl proxy 5432 -a blog-app-db
+2) npm start
