@@ -1,6 +1,3 @@
-A psql console connection to the database can be opened as follows:
-flyctl postgres connect -a <app_name-db>
-
  - creating a table:
 ```sql
 CREATE TABLE blogs (
