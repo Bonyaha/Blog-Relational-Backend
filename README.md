@@ -16,3 +16,4 @@
 ```
 1) flyctl proxy 5432 -a blog-app-db
 2) npm start
+3) flyctl postgres connect -a blog-app-db
