@@ -4,7 +4,7 @@
   "description": "relational database version of blog app",
   "main": "cli.js",
   "scripts": {
-    "start": "nodemon cli.js",
+    "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
