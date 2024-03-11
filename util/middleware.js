@@ -1,23 +1,22 @@
 const blogFinder = async (req, res, next) => {
-	try {
-		req.blog = await Blog.findByPk(req.params.id)
-		if (!req.blog) {
-			return res.status(404).end()
-		}
-		next()
-	} catch (error) {
-		next(error)
+	req.blog = await Blog.findByPk(req.params.id)
+	if (!req.blog) {
+		return res.status(404).end()
 	}
+	next()
+
 }
 
 const errorHandler = (error, req, res, next) => {
 	console.error(error.message)
 
 	if (error.name === 'CastError') {
-		return res.status(400).send({ error: 'malformatted id' })
+		return response.status(400).send({ error: 'malformatted id' })
+	} else if (error.name === 'ValidationError') {
+		return response.status(400).json({ error: error.message })
 	}
 
-	res.status(500).json({ error: 'Internal Server Error' })
+	next(error)
 }
 
 module.exports = {

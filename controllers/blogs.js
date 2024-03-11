@@ -17,7 +17,6 @@ router.post('/', async (req, res) => {
 	return res.status(201).json(blog)
 })
 
-
 router.delete('/:id', blogFinder, async (req, res) => {
 	await req.blog.destroy()
 	return res.status(204).end()
