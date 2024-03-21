@@ -1,9 +1,15 @@
 const router = require('express').Router()
-const { Blog } = require('../models')
-const { blogFinder } = require('../util/middleware')
+const { Blog, User } = require('../models')
+const { blogFinder, userExtractor } = require('../util/middleware')
 
 router.get('/', async (req, res) => {
-	const blogs = await Blog.findAll()
+	const blogs = await Blog.findAll({
+		attributes: { exclude: ['userId'] },
+		include: {
+			model: User,
+			attributes: ['name']
+		}
+	})
 	console.log(JSON.stringify(blogs, null, 2))
 	res.json(blogs)
 })
@@ -13,14 +19,10 @@ router.get('/:id', blogFinder, async (req, res) => {
 })
 
 
-router.post('/', async (req, res) => {
-	const blog = await Blog.create(req.body)
+router.post('/', userExtractor, async (req, res) => {
+	const user = request.user
+	const blog = await Blog.create({ ...req.body, userId: user.id })
 	return res.status(201).json(blog)
-})
-
-router.delete('/:id', blogFinder, async (req, res) => {
-	await req.blog.destroy()
-	return res.status(204).end()
 })
 
 router.put('/:id', blogFinder, async (req, res) => {
@@ -29,6 +31,17 @@ router.put('/:id', blogFinder, async (req, res) => {
 
 	res.json(req.blog)
 
+})
+
+router.delete('/:id', blogFinder, userExtractor, async (req, res) => {
+	const blog = req.blog
+	const user = req.user
+
+	if (blog.userId !== user.id) {
+		return res.status(403).json({ error: "Unauthorized: You are not the owner of this blog." })
+	}
+	await req.blog.destroy()
+	return res.status(204).end()
 })
 
 module.exports = router
