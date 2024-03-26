@@ -34,7 +34,7 @@ router.get('/:id', blogFinder, async (req, res) => {
 
 
 router.post('/', userExtractor, async (req, res) => {
-	const user = request.user
+	const user = req.user
 	const blog = await Blog.create({ ...req.body, userId: user.id })
 	return res.status(201).json(blog)
 })

@@ -1,5 +1,6 @@
-const { Blog } = require('../models')
+const { Blog, User } = require('../models')
 const { SECRET } = require('../util/config')
+const jwt = require('jsonwebtoken')
 
 const blogFinder = async (req, res, next) => {
 	req.blog = await Blog.findByPk(req.params.id)
@@ -26,28 +27,29 @@ const errorHandler = (error, req, res, next) => {
 }
 const tokenExtractor = (req, res, next) => {
 	const authorization = req.get('authorization')
+	console.log(authorization)
 	if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-		request.token = authorization.substring(7)
+		req.token = authorization.substring(7)
 	}
 	else {
-		request.token = null
+		req.token = null
 	}
 	next()
 }
 
-const userExtractor = async (request, response, next) => {
-	console.log('request.token is', request.token)
-	if (!request.token) {
+const userExtractor = async (req, res, next) => {
+	console.log('request.token is', req.token)
+	if (!req.token) {
 		return response.status(401).json({ error: 'token missing' })
 	}
 
-	const decodedToken = await jwt.verify(request.token, SECRET)
+	const decodedToken = await jwt.verify(req.token, SECRET)
 
 	if (!decodedToken.id) {
 		console.log('no token object')
-		return response.status(401).json({ error: 'token invalid' })
+		return res.status(401).json({ error: 'token invalid' })
 	}
-	request.user = await User.findByPk(decodedToken.id)
+	req.user = await User.findByPk(decodedToken.id)
 	next()
 }
 
